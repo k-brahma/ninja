@@ -38,6 +38,11 @@ Django Ninjaを使用することで、型安全で高速なAPIを簡単に構�
 
 - フロントエンドの開発サーバーは`http://localhost:3000`で動作します。
 - バックエンドのAPIは`http://localhost:8000`で動作します。
+- APIドキュメント（Swagger UI）は以下のURLでアクセスできます：
+  - `http://localhost:8000/api/docs` - メインAPIのドキュメント
+  - `http://localhost:8000/accounts/docs` - アカウント関連APIのドキュメント
+
+これらのドキュメントページでは、利用可能なすべてのAPIエンドポイントを確認し、直接テストすることができます。
 
 ## 開発
 

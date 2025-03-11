@@ -1,11 +1,12 @@
 from typing import List
 
+from accounts.auth import BearerAuth  # 共通モジュールからインポート
 from django.contrib.auth.models import User
 
 from ninja import Router
 
-from .models import Post, PostSchema  # PostSchemaをインポート
-from .schemas import PostSchema  # PostSchemaをインポート
+from .models import Post
+from .schemas import PostSchema
 
 router = Router()
 
@@ -27,9 +28,10 @@ def list_posts(request):
     ]
 
 
-@router.get("/myposts", response=List[PostSchema])  # PostSchemaを使用
+@router.get("/myposts", response=List[PostSchema], auth=BearerAuth())  # 認証を追加
 def my_posts(request):
-    posts = Post.objects.filter(author=request.user)
+    # ユーザーが認証されていることが保証されている
+    posts = Post.objects.filter(author=request.auth)
     return [
         PostSchema(
             id=post.id,
@@ -42,9 +44,9 @@ def my_posts(request):
     ]
 
 
-@router.post("/posts", response=PostSchema)  # 作成したPostを返す場合は、responseを指定
+@router.post("/posts", response=PostSchema, auth=BearerAuth())  # 認証を追加
 def create_post(request, title: str, content: str):
-    post = Post.objects.create(title=title, content=content, author=request.user)
+    post = Post.objects.create(title=title, content=content, author=request.auth)
     return PostSchema(
         id=post.id,
         title=post.title,
