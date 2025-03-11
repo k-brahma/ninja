@@ -10,13 +10,22 @@ services:
 
   web:
     build: ../backend
-    entrypoint: /code/entrypoint.sh  # commandの代わりにentrypointを使用
+    entrypoint: /code/entrypoint.sh
     volumes:
       - ../backend:/code
     ports:
       - "8000:8000"
     depends_on:
       - db
+
+  frontend:
+    build: ../frontend
+    volumes:
+      - ../frontend:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - web
 
 volumes:
   postgres_data:
